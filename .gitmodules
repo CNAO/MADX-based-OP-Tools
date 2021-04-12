@@ -1,4 +1,7 @@
 [submodule "externals/optics"]
 	path = externals/optics
-	url = https://github.com/amereghe/optics.git
+	url = git@github.com:amereghe/optics.git
         branch = fromOperation
+[submodule "externals/MatLabTools"]
+	path = externals/MatLabTools
+	url = https://github.com/CNAO/MatLabTools.git
