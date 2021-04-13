@@ -5,18 +5,6 @@ addpath(genpath(pathToLibrary));
 % OPpath="K:";
 OPpath="S:\Accelerating-System\Accelerator-data";
 
-% TO-DO
-% - complete implementation of mode (including I2K function);
-% - use only really necessary observations per property;
-% - loops over: magnets, current ranges, energy ranges;
-% - add machine -> extension to eg synchro;
-% - add checks of user input;
-
-% corrector names (MADX nomenclature):
-% - [ "T1_011A_CEB" "T2_015A_CEB" ];
-% - [ "U1_023A_CEB" "U2_013A_CEB" ];
-% - [ "V1_044A_CEB" "V2_013A_CEB" ];
-% - [ "Z1_011A_CEB" "Z2_015A_CEB" ];
 % magnetName="V1_044A_CEB"; %[ "V1_044A_CEB" ; "V2_013A_CEB" ]; % [ "T1_011A_CEB" "T2_015A_CEB" ],[ "U1_023A_CEB" "U2_013A_CEB" ],[ "V1_044A_CEB" "V2_013A_CEB" ],[ "Z1_011A_CEB" "Z2_015A_CEB" ]
 % properties=[ ... % 1 row per magnet
 %     "HKICK" "VKICK" ; ... % first corrector
