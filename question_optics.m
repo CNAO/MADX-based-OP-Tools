@@ -1,6 +1,6 @@
 % {}~
 % - include Matlab library
-pathToLibrary="D:\VMs\vb_share\repos\MatLabTools";
+pathToLibrary=".\externals\MatLabTools";
 addpath(genpath(pathToLibrary));
 % OPpath="K:";
 OPpath="S:\Accelerating-System\Accelerator-data";
@@ -50,13 +50,20 @@ OPpath="S:\Accelerating-System\Accelerator-data";
 % end
 % % check that all visualisation schemes are found in the data parsed -- to come!
 
-beamPart="PROTON"; % select beam particle: PROTON, CARBON
-outputPath=".";    % for .xlsx files
-MADXpath=".";      % path to MADX files
-combo="REGULAR";   % REGULAR, COUPLED -- see header of getStandards function
-mode="RM";         % RM: response matrix
-magnetName="T2_015A_CEB"; %[ "V1_044A_CEB" ; "V2_013A_CEB" ]; % [ "T1_011A_CEB" "T2_015A_CEB" ],[ "U1_023A_CEB" "U2_013A_CEB" ],[ "V1_044A_CEB" "V2_013A_CEB" ],[ "Z1_011A_CEB" "Z2_015A_CEB" ]
-Is=[ -150 150 10 ];   % Imin, Imax, Istep [A]
+beamPart="CARBON";   % select beam particle: PROTON, CARBON
+outputPath="OUTPUT"; % for .xlsx files
+MADXpath=".\externals\optics\HEBT";        % path to MADX files
+combo="REGULAR";     % REGULAR, COUPLED -- see header of getStandards function
+mode="RM";           % RM: response matrix
+% magnetName="T1_011A_CEB";
+% magnetName="T2_015A_CEB";
+% magnetName="U1_023A_CEB";
+% magnetName="U2_013A_CEB";
+% magnetName="V1_044A_CEB";
+magnetName="V2_013A_CEB";
+% magnetName="Z1_011A_CEB";
+% magnetName="Z2_015A_CEB";
+Is=[ -120 120 40 ];   % Imin, Imax, Istep [A]
 NeNs=[ 1 -1 1 ];      % energy values: min, max, step -- if max<min, go up to last energy value
 % properties=[ "HKICK" "VKICK" ];
 % pippo=[ ... % observations in MADX output files
@@ -326,7 +333,7 @@ function overview3D(RMtables,RMtableHeaders,magnetName,whatToShow,properties)
             obsLoc=tempSplit(3);
             obs=sprintf("%s:%s",obsVar,obsLoc);
             propIndex=find(properties==kick);
-            obsIndex=find(contains(RMtableHeaders(:,:,propIndex),obs));
+            obsIndex=contains(RMtableHeaders(:,:,propIndex),obs);
             [multFact,unit]=FactorMe(obsVar);
             for iSet=1:nSets
                 indices=(RMtables(:,iColPar,propIndex)==sets(iSet));
@@ -389,7 +396,7 @@ function [FitParams,headerFitParams]=performFit(RMtables,RMtableHeaders,magnetNa
                 obsLoc=tempSplit(3);
                 obs=sprintf("%s:%s",obsVar,obsLoc);
                 propIndex=find(properties==kick);
-                obsIndex=find(contains(RMtableHeaders(:,:,propIndex),obs));
+                obsIndex=contains(RMtableHeaders(:,:,propIndex),obs);
                 [multFact,unit]=FactorMe(obsVar);
                 % indices=(RMtables(:,iColPar,propIndex)==sets(iSet));
                 RMtempTab=RMtables(indices(:,:,propIndex),:,propIndex);
