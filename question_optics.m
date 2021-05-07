@@ -2,8 +2,8 @@
 % - include Matlab library
 pathToLibrary=".\externals\MatLabTools";
 addpath(genpath(pathToLibrary));
-% OPpath="K:";
-OPpath="S:\Accelerating-System\Accelerator-data";
+OPpath="K:";
+%OPpath="S:\Accelerating-System\Accelerator-data";
 
 % magnetName="V1_044A_CEB"; %[ "V1_044A_CEB" ; "V2_013A_CEB" ]; % [ "T1_011A_CEB" "T2_015A_CEB" ],[ "U1_023A_CEB" "U2_013A_CEB" ],[ "V1_044A_CEB" "V2_013A_CEB" ],[ "Z1_011A_CEB" "Z2_015A_CEB" ]
 % properties=[ ... % 1 row per magnet
@@ -51,7 +51,7 @@ mode="RM";           % RM: response matrix
 magnetName="V2_013A_CEB";
 % magnetName="Z1_011A_CEB";
 % magnetName="Z2_015A_CEB";
-Is=[ -120 120 40 ];   % Imin, Imax, Istep [A]
+Is=[ -10 10 10 ];   % Imin, Imax, Istep [A]
 NeNs=[ 1 -1 1 ];      % energy values: min, max, step -- if max<min, go up to last energy value
 % properties=[ "HKICK" "VKICK" ];
 % pippo=[ ... % observations in MADX output files
@@ -235,9 +235,11 @@ end
 % run MADX
 function runMADX(actualMasterFile,MADXpath)
     origFolder=cd(MADXpath);
-    MADexe="T:\ARicerca\MADX\5.06.01\madx-win64-gnu.exe";
+    % MADexe="T:\ARicerca\MADX\5.06.01\madx-win64-gnu.exe";
+    MADexe="K:\Area dati MD\00MatriciDiRisposta\MADX-based-OP-Tools\madx5.06.01\madx-win64-gnu.exe";
     fprintf('running %s ...\n',MADexe);
-    mycmd=sprintf("%s < %s > MADX.log",MADexe,actualMasterFile);
+    % mycmd=sprintf('"%s" < %s > MADX.log',MADexe,actualMasterFile);
+    mycmd=sprintf('"%s" < %s',MADexe,actualMasterFile);
     [status,cmdout]=system(mycmd);
     cd(origFolder);
     if ( status ~= 0 )
