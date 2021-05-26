@@ -920,6 +920,6 @@ function [xlsFileName,MADXfileNames,RMfileNames]=fileNames(magnetName,properties
     MADXfileNames(4)="compute_RM_matlab.cmdx"; % actual commands
     RMfileNames=strings(length(properties),1);
     for iProperty=1:length(properties)
-        RMfileNames(iProperty)=sprintf("%s__%s__rm.tfs",lower(magnetName),lower(properties(iProperty)));
+        RMfileNames(iProperty)=sprintf("%s__%s__rm.csv",lower(magnetName),lower(properties(iProperty)));
     end
 end
