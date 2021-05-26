@@ -45,13 +45,13 @@ combo="REGULAR";     % REGULAR, COUPLED -- see header of getStandards function
 mode="RM";           % RM: response matrix
 % magnetName="T1_011A_CEB";
 % magnetName="T2_015A_CEB";
-% magnetName="U1_023A_CEB";
+magnetName="U1_023A_CEB";
 % magnetName="U2_013A_CEB";
 % magnetName="V1_044A_CEB";
-magnetName="V2_013A_CEB";
+% magnetName="V2_013A_CEB";
 % magnetName="Z1_011A_CEB";
 % magnetName="Z2_015A_CEB";
-Is=[ -120 120 40 ];   % Imin, Imax, Istep [A]
+Is=[ -10 10 10 ];   % Imin, Imax, Istep [A]
 NeNs=[ 1 -1 1 ];      % energy values: min, max, step -- if max<min, go up to last energy value
 % properties=[ "HKICK" "VKICK" ];
 % pippo=[ ... % observations in MADX output files
@@ -208,9 +208,9 @@ function writeMADXfiles(magnetName,properties,observations,beamPart,MADXpath,MAD
     fprintf(fid,'   assign, echo=fileName;\r\n');
     obsColsFormat=strings(length(observations),1);
     obsColsFormat(:)="% 19.12E ";
-    obsColsFormat=sprintf(" %s",obsColsFormat);
+    obsColsFormat=sprintf("%s,",obsColsFormat);
     obsColsFormat=extractBetween(obsColsFormat,1,strlength(obsColsFormat)-1);
-    fprintf(fid,'   PRINTF, TEXT="%% 19.12E %% 6.1f %% 12.5E %% 19.12E %s",\r\n',obsColsFormat);
+    fprintf(fid,'   PRINTF, TEXT="%% 19.12E,%% 6.1f,%% 12.5E,%% 19.12E,%s",\r\n',obsColsFormat);
     fprintf(fid,'           VALUE=Brho, BP, currI, kWrite,\r\n');
     for ii=1:length(observations)
         allSplit=split(observations,":");
@@ -236,8 +236,10 @@ end
 function runMADX(actualMasterFile,MADXpath)
     origFolder=cd(MADXpath);
     MADexe="T:\ARicerca\MADX\5.06.01\madx-win64-gnu.exe";
+    % MADexe="K:\Area dati MD\00MatriciDiRisposta\MADX-based-OP-Tools\madx5.06.01\madx-win64-gnu.exe";
     fprintf('running %s ...\n',MADexe);
-    mycmd=sprintf("%s < %s > MADX.log",MADexe,actualMasterFile);
+    % mycmd=sprintf('"%s" < %s > MADX.log',MADexe,actualMasterFile);
+    mycmd=sprintf('"%s" < %s',MADexe,actualMasterFile);
     [status,cmdout]=system(mycmd);
     cd(origFolder);
     if ( status ~= 0 )
@@ -260,7 +262,7 @@ function [RMtables,RMtableHeaders]=readMADXData(MADXpath,RMfileNames)
     for iFile=1:nFiles
         % MADX file name and path:
         fprintf('parsing file %s ...\n',RMfileNames(iFile));
-        RMtable=readmatrix(RMfileNames(iFile),'ConsecutiveDelimitersRule','join','LeadingDelimitersRule','ignore','TrailingDelimitersRule','ignore','NumHeaderLines',1,'FileType','text');
+        RMtable=readmatrix(RMfileNames(iFile),'Delimiter',',','NumHeaderLines',1,'FileType','text');
         % increase storage, if needed
         if ( size(RMtable,1)>size(RMtables,1) | size(RMtable,2)>size(RMtables,2) )
             nMaxRows=max(size(RMtable,1),size(RMtables,1));
@@ -918,6 +920,6 @@ function [xlsFileName,MADXfileNames,RMfileNames]=fileNames(magnetName,properties
     MADXfileNames(4)="compute_RM_matlab.cmdx"; % actual commands
     RMfileNames=strings(length(properties),1);
     for iProperty=1:length(properties)
-        RMfileNames(iProperty)=sprintf("%s__%s__rm.tfs",lower(magnetName),lower(properties(iProperty)));
+        RMfileNames(iProperty)=sprintf("%s__%s__rm.csv",lower(magnetName),lower(properties(iProperty)));
     end
 end
